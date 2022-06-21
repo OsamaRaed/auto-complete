@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>auto-zeft</title>
+  </head>
+  <body>
+    <p>search for words</p>
+    <input type="text" id="query" onkeyup="search()" />
+    <p>results</p>
+    <ul id="results"></ul>
+
+    <script>
+      function search() {
+        var x = document.getElementById("query").value;
+        var list = document.getElementById("results");
+        list.textContent = "";
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            var arr = xhr.response;
+            arr = JSON.parse(arr);
+            console.log(arr);
+            arr.forEach((element) => {
+              var entry = document.createElement("li");
+              entry.appendChild(document.createTextNode(element));
+              list.appendChild(entry);
+            });
+          }
+        };
+        xhr.open("GET", "/search?query_search=" + x, true);
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>
